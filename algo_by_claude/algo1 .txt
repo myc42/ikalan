@@ -1,0 +1,12 @@
+Algo
+
+
+Le document est prêt. Voici ce qu'il contient et comment l'utiliser.
+
+Le guide est organisé en 9 sections. Voici l'essentiel à retenir pour ton projet.
+Les structures de données que tu coderas en premier : la CircularQueue pour la file de révision quotidienne, le MinHeap pour toujours sortir l'exercice le plus urgent, et la HashMap comme cache local de progression pour éviter d'interroger PostgreSQL à chaque écran.
+L'algorithme SM-2 est le cœur de ton app. Chaque lettre, syllabe et mot devient une "carte" avec un intervalle de révision qui s'allonge si l'apprenant réussit, et se réinitialise s'il échoue. Une seule fonction sm2Update() gère tout ça en O(1). Le schéma SQL complet est inclus avec les index optimisés.
+La génération d'exercices repose sur deux algorithmes : le weightedSample qui favorise les items les plus faibles lors de la sélection, et le generateDistractors basé sur Levenshtein qui crée automatiquement des mauvaises réponses crédibles (par exemple MA → NA, SA, MO pour les exercices à choix multiple).
+La validation combine deux approches : un score de similarité qui tolère les fautes de frappe, et une normalisation phonétique qui accepte "marche" quand l'attendu est "marché" — indispensable pour les réponses au micro.
+Côté PostgreSQL, les trois requêtes les plus importantes sont dans le document : récupérer les 20 cartes dues (avec l'index sur due_at), l'upsert atomique après une réponse, et les stats hebdomadaires de progression. Le partitionnement de la table sessions par mois est prévu dès le départ pour tenir la charge à long terme.
+Le pattern offline-first est celui qui te fera gagner le plus de temps : toutes les réponses s'enregistrent d'abord dans une queue locale, et se synchronisent automatiquement dès que la connexion revient. Critique pour les utilisateurs en zone à connectivité instable en Afrique de l'Ouest.
