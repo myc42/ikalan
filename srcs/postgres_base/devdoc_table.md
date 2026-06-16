@@ -68,3 +68,23 @@ Tu peux réutiliser les mêmes verbes dans plein de modules différents (grâce 
 C'est exactement cette combinaison qui rend ta base de données professionnelle.
 
 Est-ce que tu te rends compte de la puissance de ce que tu viens de concevoir ? Avec cette simple structure, tu n'as plus jamais à te soucier de "copier-coller" des données. Tu ne fais que créer des liens.
+
+
+
+--------------------------
+
+Pour l’application d’alphabétisation, j’ai choisi la structure suivante :
+
+Tout d’abord, la base de données sera organisée en **chapitres**, chaque chapitre contenant plusieurs **modules**. Chaque module sera associé à plusieurs **graphèmes** (sons, consonnes, voyelles, etc.), car l’apprentissage de la langue française se fait en grande partie à travers les graphèmes. Chaque graphème sera également lié à son **type** afin de faciliter leur classification.
+
+Ensuite, j’aurai une table **Mots**. Chaque mot sera découpé en une liste de graphèmes, ce qui permettra de retrouver facilement les mots contenant un graphème spécifique. Cette approche sera utile pour proposer des exercices ciblés ou rechercher des mots composés uniquement de graphèmes déjà étudiés.
+
+Les **graphèmes** et les **mots** seront également liés à leurs **sons** respectifs.
+
+Chaque module contiendra aussi des **phrases à apprendre**. Cependant, comme une phrase est généralement composée d’un **sujet**, d’un **verbe** et d’un **complément**, j’ai choisi de modéliser ces éléments dans des tables distinctes. Les modules pourront ainsi être liés aux sujets, verbes et compléments déjà étudiés. Par exemple, un module pourra indiquer que les sujets « je » ou « il » peuvent être utilisés parce que l’apprenant possède déjà les connaissances nécessaires pour les comprendre.
+
+Afin de limiter les erreurs grammaticales, j’ai également prévu une structure permettant de contrôler les associations entre sujets et verbes. Par exemple, le sujet « je » sera relié uniquement aux formes verbales compatibles afin d’éviter des constructions incorrectes comme « je venons ».
+
+Enfin, j’ai constaté qu’un sujet et un verbe peuvent être grammaticalement compatibles sans que le complément ait du sens avec eux. J’ai donc ajouté une table permettant de définir les relations entre les **verbes** et les **compléments**. Par exemple, le verbe « aller » pourra être associé à des lieux tels que « hôpital », « école » ou « maison ». Cela garantira la génération de phrases cohérentes et pertinentes.
+
+Grâce à cette organisation, la base de données restera claire, cohérente et permettra de générer ou de sélectionner facilement des contenus pédagogiques adaptés au niveau de l’apprenant.
