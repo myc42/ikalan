@@ -1,0 +1,9 @@
+gesdinet_jwt_refresh_token:
+    # C'est ICI qu'il faut pointer vers ton entité locale pour que Doctrine la détecte
+    refresh_token_class: App\Entity\RefreshToken
+    
+    ttl: 15552000 # 6 mois
+    # Sécurité avancée : Rotation du Refresh Token
+    single_use: true 
+    # Active la Sliding Expiration (repousse la date d'expiration à chaque utilisation)
+    ttl_update: true
