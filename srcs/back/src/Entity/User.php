@@ -10,6 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_TELEPHONE', fields: ['telephone'])]
+#[ORM\HasLifecycleCallbacks]  // ← ajouter ça
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -46,6 +47,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updateAt = null;
+
+    public function __construct()
+    {
+        $now = new \DateTimeImmutable();
+        $this->registerAt = $now;
+        $this->updateAt = $now;
+    }
+
 
     public function getId(): ?int
     {
@@ -186,5 +195,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // Remplace 'name' ou 'title' par la propriété texte qui définit ton Sujet
         return $this->id ?? 'Sujet sans nom'; 
+    }
+    
+    #[ORM\PreUpdate]  // ← s'exécute automatiquement avant chaque UPDATE
+    public function onPreUpdate(): void
+    {
+        $this->updateAt = new \DateTimeImmutable();
     }
 }

@@ -17,15 +17,15 @@ class Trophy
     #[ORM\JoinColumn(nullable: false)]
     private ?User $userId = null;
 
-    #[ORM\Column(options: ['default' => 0])]
-    private int $perfectChapter = 0;
+    #[ORM\Column]
+    private ?int $perfectChapter = null;
 
-    #[ORM\Column(options: ['default' => 0])]
-    private int $moduleMaster = 0;
+    #[ORM\Column]
+    private ?int $moduleMaster = null;
 
-    #[ORM\Column(options: ['default' => 0])]
-    private int $flawlessStreak = 0;
-    
+    #[ORM\Column]
+    private ?int $flawlessStreak = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $updateAt = null;
 

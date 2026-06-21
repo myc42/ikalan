@@ -17,9 +17,9 @@ class UserStreaks
     #[ORM\JoinColumn(nullable: false)]
     private ?User $userId = null;
 
-    #[ORM\Column(options: ['default' => 0])]
-    private int $longestStreak = 0;
-    
+    #[ORM\Column]
+    private ?int $longestStreak = null;
+
     #[ORM\Column]
     private ?\DateTimeImmutable $lastActivityAt = null;
 
