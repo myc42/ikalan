@@ -22,7 +22,7 @@ logs: ## Affiche les logs
 ps: ## Vérifie l'état des conteneurs
 	docker compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE) ps
 
-fclean: down ## Supprime tout (Conteneurs + Volumes + Données)
-	docker compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE) down -v
+fclean: ## Supprime tout (Conteneurs + Volumes + Images + Réseaux + Données locales)
+	docker compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE) down -v --rmi all --remove-orphans
 	rm -rf srcs/db_data
-	@echo "Tout est nettoyé !"
+	@echo "Tout est nettoyé proprement !"

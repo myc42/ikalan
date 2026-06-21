@@ -12,12 +12,14 @@ services:
       - ./db_data:/var/lib/postgresql/data
 
   api:
-    image: php:8.3-cli
+    build: ./back # <--- LA MODIFICATION EST ICI
     working_dir: /app
     volumes:
       - ./back:/app
     ports:
       - "8000:8000"
-    command: php -S 0.0.0.0:8000 -t public
     environment:
       DATABASE_URL: "postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}?serverVersion=17&charset=utf8"
+    depends_on:
+      - db
+    command: php -S 0.0.0.0:8000 -t public

@@ -1,16 +1,28 @@
 import "../../global.css";
-import { Text, View } from "react-native";
+import { Text, View, Button } from "react-native";
+import { useEffect, useState } from "react";
+import { router } from "expo-router"
+import * as SecureStore from 'expo-secure-store';
+import {Link} from 'expo-router'
+
+
+
 
 
 export default function Index() {
+
+  
   return (
     <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-2xl font-bold text-blue-500">
-        NativeWind fonctionne ! 🎉
-      </Text>
-      <Text className="mt-4 text-base text-gray-500">
-        Tailwind CSS dans React NativeX
-      </Text>
+      <View>
+            <Link href="/signUp">Sign Up</Link>
+              <Link href="/home">Home</Link>
+
+      
+      </View>
+
     </View>
+
+    
   );
 }
