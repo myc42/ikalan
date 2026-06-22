@@ -13,29 +13,36 @@ class UserStreaks
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    // ✅ La bonne propriété avec inversedBy pour que le User puisse la sauvegarder !
+    #[ORM\OneToOne(inversedBy: 'userStreaks', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $userId = null;
+    private ?User $user = null;
 
     #[ORM\Column]
-    private ?int $longestStreak = null;
+    private ?int $longestStreak = 0;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $lastActivityAt = null;
+
+    public function __construct()
+    {
+        $this->lastActivityAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUserId(): ?User
+    // ✅ Uniquement les bonnes méthodes pour $user (les anciennes avec UserId sont effacées)
+    public function getUser(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(User $userId): static
+    public function setUser(?User $user): static
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }

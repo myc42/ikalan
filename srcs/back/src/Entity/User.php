@@ -3,6 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Repository\UserStreaksRepository;
+use App\Repository\TrophyRepository;
+
+
+
+
+
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -48,13 +55,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?\DateTimeImmutable $updateAt = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: Trophy::class, cascade: ['persist', 'remove'])]
+    private ?Trophy $trophy = null;
+
+    #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserStreaks::class, cascade: ['persist', 'remove'])]
+    private ?UserStreaks $userStreaks = null;
+
     public function __construct()
     {
         $now = new \DateTimeImmutable();
         $this->registerAt = $now;
         $this->updateAt = $now;
-    }
 
+        // --- C'EST CETTE PARTIE QUI CRÉE LES ENTITÉS PAR DÉFAUT ---
+        $this->trophy = new Trophy();
+        $this->trophy->setUser($this); // Essentiel pour lier le Trophy à ce User
+
+        $this->userStreaks = new UserStreaks();
+        $this->userStreaks->setUser($this); // Essentiel pour lier les Streaks à ce User
+    }
 
     public function getId(): ?int
     {
@@ -202,4 +221,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->updateAt = new \DateTimeImmutable();
     }
+
 }

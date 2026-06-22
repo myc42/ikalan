@@ -21,14 +21,15 @@ class UserStreaksCrudController extends AbstractCrudController
         return [
             IdField::new('id')->hideOnForm(), // Masqué lors de la création/édition
             
-            // Relie cette série à un utilisateur via un menu déroulant
-            AssociationField::new('userId', 'Utilisateur'), 
+            // ✅ CORRECTION : On utilise bien 'user' pour correspondre à ton entité
+            AssociationField::new('user', 'Utilisateur'), 
             
             // Un champ entier pour le score de la plus longue série
             IntegerField::new('longestStreak', 'Plus longue série (jours)'),
             
             // Un champ date et heure pour stocker la dernière activité
-            DateTimeField::new('lastActivityAt', 'Dernière activité'),
+            // J'ajoute hideOnForm() si cette date est gérée automatiquement par ton code
+            DateTimeField::new('lastActivityAt', 'Dernière activité')->hideOnForm(),
         ];
     }
 }

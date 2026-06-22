@@ -13,35 +13,42 @@ class Trophy
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\OneToOne(cascade: ['persist', 'remove'])]
+    // ✅ Ajout de inversedBy: 'trophy' pour faire le lien avec l'entité User
+    #[ORM\OneToOne(inversedBy: 'trophy', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $userId = null;
+    private ?User $user = null;
 
     #[ORM\Column]
-    private ?int $perfectChapter = null;
+    private ?int $perfectChapter = 0;
 
     #[ORM\Column]
-    private ?int $moduleMaster = null;
+    private ?int $moduleMaster = 0;
 
     #[ORM\Column]
-    private ?int $flawlessStreak = null;
+    private ?int $flawlessStreak = 0;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updateAt = null;
+
+    public function __construct()
+    {
+        $this->updateAt = new \DateTimeImmutable();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUserId(): ?User
+    // ✅ Les bonnes méthodes pour manipuler $user (les anciennes sont supprimées)
+    public function getUser(): ?User
     {
-        return $this->userId;
+        return $this->user;
     }
 
-    public function setUserId(User $userId): static
+    public function setUser(?User $user): static
     {
-        $this->userId = $userId;
+        $this->user = $user;
 
         return $this;
     }
