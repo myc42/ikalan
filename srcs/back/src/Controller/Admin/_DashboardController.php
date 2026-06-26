@@ -44,9 +44,15 @@ class _DashboardController extends AbstractDashboardController
             yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
 
             yield MenuItem::linkTo(UserCrudController::class, 'Utilisateurs', 'fas fa-users');
+            yield MenuItem::linkTo(ProgressionCrudController::class, 'Progression', 'fas fa-chart-line');
+            yield MenuItem::linkTo(UserModuleProgressCrudController::class, 'Module Progress', 'fas fa-chart-line');
+            yield MenuItem::linkTo(UserItemMasteryCrudController::class, 'Item Mastery', 'fas fa-chart-line');
+
+
+
             yield MenuItem::linkTo(UserDevicesCrudController::class, 'Appareils', 'fas fa-mobile-alt');
-yield MenuItem::linkTo(TrophyCrudController::class, 'Trophées', 'fas fa-trophy');
-yield MenuItem::linkTo(UserStreaksCrudController::class, 'Séries (Streaks)', 'fas fa-fire');
+            yield MenuItem::linkTo(TrophyCrudController::class, 'Trophées', 'fas fa-trophy');
+            yield MenuItem::linkTo(UserStreaksCrudController::class, 'Séries (Streaks)', 'fas fa-fire');
 
 
             yield MenuItem::linkTo(ChaptersCrudController::class, 'Chapitres', 'fas fa-book-open');

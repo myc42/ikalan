@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use App\Repository\UserStreaksRepository;
 use App\Repository\TrophyRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 
 
@@ -61,6 +63,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', targetEntity: UserStreaks::class, cascade: ['persist', 'remove'])]
     private ?UserStreaks $userStreaks = null;
 
+    /**
+     * @var Collection<int, Progression>
+     */
+    #[ORM\OneToMany(targetEntity: Progression::class, mappedBy: 'userId', orphanRemoval: true)]
+    private Collection $progressions;
+
+    /**
+     * @var Collection<int, UserModuleProgress>
+     */
+    #[ORM\OneToMany(targetEntity: UserModuleProgress::class, mappedBy: 'userId')]
+    private Collection $userModuleProgress;
+
     public function __construct()
     {
         $now = new \DateTimeImmutable();
@@ -73,6 +87,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         $this->userStreaks = new UserStreaks();
         $this->userStreaks->setUser($this); // Essentiel pour lier les Streaks à ce User
+        $this->progressions = new ArrayCollection();
+        $this->userModuleProgress = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -220,6 +236,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function onPreUpdate(): void
     {
         $this->updateAt = new \DateTimeImmutable();
+    }
+
+    /**
+     * @return Collection<int, Progression>
+     */
+    public function getProgressions(): Collection
+    {
+        return $this->progressions;
+    }
+
+    public function addProgression(Progression $progression): static
+    {
+        if (!$this->progressions->contains($progression)) {
+            $this->progressions->add($progression);
+            $progression->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProgression(Progression $progression): static
+    {
+        if ($this->progressions->removeElement($progression)) {
+            // set the owning side to null (unless already changed)
+            if ($progression->getUserId() === $this) {
+                $progression->setUserId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserModuleProgress>
+     */
+    public function getUserModuleProgress(): Collection
+    {
+        return $this->userModuleProgress;
+    }
+
+    public function addUserModuleProgress(UserModuleProgress $userModuleProgress): static
+    {
+        if (!$this->userModuleProgress->contains($userModuleProgress)) {
+            $this->userModuleProgress->add($userModuleProgress);
+            $userModuleProgress->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserModuleProgress(UserModuleProgress $userModuleProgress): static
+    {
+        if ($this->userModuleProgress->removeElement($userModuleProgress)) {
+            // set the owning side to null (unless already changed)
+            if ($userModuleProgress->getUserId() === $this) {
+                $userModuleProgress->setUserId(null);
+            }
+        }
+
+        return $this;
     }
 
 }

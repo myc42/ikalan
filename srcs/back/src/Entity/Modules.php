@@ -49,11 +49,25 @@ class Modules
     #[ORM\OneToMany(targetEntity: ModuleComplements::class, mappedBy: 'moduleId')]
     private Collection $moduleComplements;
 
+    /**
+     * @var Collection<int, Progression>
+     */
+    #[ORM\OneToMany(targetEntity: Progression::class, mappedBy: 'moduleId', orphanRemoval: true)]
+    private Collection $progressions;
+
+    /**
+     * @var Collection<int, UserModuleProgress>
+     */
+    #[ORM\OneToMany(targetEntity: UserModuleProgress::class, mappedBy: 'moduleId')]
+    private Collection $userModuleProgress;
+
     public function __construct()
     {
         $this->moduleSubjects = new ArrayCollection();
         $this->moduleVerbs = new ArrayCollection();
         $this->moduleComplements = new ArrayCollection();
+        $this->progressions = new ArrayCollection();
+        $this->userModuleProgress = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -212,7 +226,67 @@ class Modules
     }
 
  public function __toString(): string
+                                  {
+                                      return $this->title ?? 'Module sans titre'; // Adapte selon la propriété de ton entité Module
+                                  }
+
+    /**
+     * @return Collection<int, Progression>
+     */
+    public function getProgressions(): Collection
     {
-        return $this->title ?? 'Module sans titre'; // Adapte selon la propriété de ton entité Module
+        return $this->progressions;
+    }
+
+    public function addProgression(Progression $progression): static
+    {
+        if (!$this->progressions->contains($progression)) {
+            $this->progressions->add($progression);
+            $progression->setModuleId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProgression(Progression $progression): static
+    {
+        if ($this->progressions->removeElement($progression)) {
+            // set the owning side to null (unless already changed)
+            if ($progression->getModuleId() === $this) {
+                $progression->setModuleId(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, UserModuleProgress>
+     */
+    public function getUserModuleProgress(): Collection
+    {
+        return $this->userModuleProgress;
+    }
+
+    public function addUserModuleProgress(UserModuleProgress $userModuleProgress): static
+    {
+        if (!$this->userModuleProgress->contains($userModuleProgress)) {
+            $this->userModuleProgress->add($userModuleProgress);
+            $userModuleProgress->setModuleId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserModuleProgress(UserModuleProgress $userModuleProgress): static
+    {
+        if ($this->userModuleProgress->removeElement($userModuleProgress)) {
+            // set the owning side to null (unless already changed)
+            if ($userModuleProgress->getModuleId() === $this) {
+                $userModuleProgress->setModuleId(null);
+            }
+        }
+
+        return $this;
     }
 }
