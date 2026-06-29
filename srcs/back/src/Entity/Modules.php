@@ -61,6 +61,9 @@ class Modules
     #[ORM\OneToMany(targetEntity: UserModuleProgress::class, mappedBy: 'moduleId')]
     private Collection $userModuleProgress;
 
+    #[ORM\Column]
+    private ?int $wordLevel = null;
+
     public function __construct()
     {
         $this->moduleSubjects = new ArrayCollection();
@@ -226,9 +229,9 @@ class Modules
     }
 
  public function __toString(): string
-                                  {
-                                      return $this->title ?? 'Module sans titre'; // Adapte selon la propriété de ton entité Module
-                                  }
+                                           {
+                                               return $this->title ?? 'Module sans titre'; // Adapte selon la propriété de ton entité Module
+                                           }
 
     /**
      * @return Collection<int, Progression>
@@ -286,6 +289,18 @@ class Modules
                 $userModuleProgress->setModuleId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getWordLevel(): ?int
+    {
+        return $this->wordLevel;
+    }
+
+    public function setWordLevel(int $wordLevel): static
+    {
+        $this->wordLevel = $wordLevel;
 
         return $this;
     }

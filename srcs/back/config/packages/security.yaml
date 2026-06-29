@@ -45,6 +45,7 @@ security:
     access_control:
         # On laisse tout le monde tenter de se connecter ou de rafraîchir le token
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/ping, roles: PUBLIC_ACCESS }
         - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
         - { path: ^/api/register, roles: PUBLIC_ACCESS }
         

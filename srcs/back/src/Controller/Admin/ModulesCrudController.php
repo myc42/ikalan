@@ -10,6 +10,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 
+
 class ModulesCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
@@ -44,6 +45,8 @@ class ModulesCrudController extends AbstractCrudController
             AssociationField::new('moduleSubjects', 'Sujets associés')->hideOnForm(),
             AssociationField::new('moduleVerbs', 'Verbes associés')->hideOnForm(),
             AssociationField::new('moduleComplements', 'Compléments associés')->hideOnForm(),
+            IntegerField::new('wordLevel', 'Word level'),
+
         ];
     }
 }
